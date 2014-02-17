@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using Dario.Models;
 
 [assembly: OwinStartup(typeof(Dario.Startup))]
 namespace Dario
@@ -11,21 +12,7 @@ namespace Dario
     {
         public void Configuration(IAppBuilder app)
         {
-            var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            config.Routes.MapHttpRoute(
-                "Home", //Route name 
-                "api", //URL with parameters 
-                new { controller = "Home" } //Parameter defaults 
-            );
-
-
-            app.UseWebApi(config);
+            app.UseWebApi(Config.GetHttpConfiguration());
         }
     }
 }
