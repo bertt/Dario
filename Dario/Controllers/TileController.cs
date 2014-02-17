@@ -20,6 +20,7 @@ namespace Dario.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, image);
         }
 
+        /**
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
         public HttpResponseMessage GetTile(string layers, string level, int col, int row)
         {
@@ -29,6 +30,6 @@ namespace Dario.Controllers
                 Request.CreateResponse(HttpStatusCode.OK, image) :
                 Request.CreateResponse(HttpStatusCode.NotFound, "No images found");
         }
-
+        */
     }
 }

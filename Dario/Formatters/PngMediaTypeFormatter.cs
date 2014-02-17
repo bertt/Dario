@@ -20,19 +20,12 @@ namespace Dario.Formatters
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, System.Net.Http.HttpContent content, TransportContext transportContext)
         {
             var taskSource = new TaskCompletionSource<object>();
-            try
-            {
-                var image = (Image)value;
-                var ms = new MemoryStream();
-                image.Save(ms, ImageFormat.Png);
-                var bytes = ms.ToArray();
-                writeStream.Write(bytes, 0, bytes.Length);
-                taskSource.SetResult(null);
-            }
-            catch (Exception e)
-            {
-                taskSource.SetException(e);
-            }
+            var image = (Image)value;
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            var bytes = ms.ToArray();
+            writeStream.Write(bytes, 0, bytes.Length);
+            taskSource.SetResult(null);
             return taskSource.Task;
         }
 

@@ -11,7 +11,7 @@ namespace Dario
         public void Configuration(IAppBuilder app)
         {
             app.UseWebApi(Config.GetHttpConfiguration());
-            //app.UseWelcomePage();
+            app.UseWelcomePage();
             app.UseErrorPage();
             app.UseStageMarker(PipelineStage.MapHandler);
         }
