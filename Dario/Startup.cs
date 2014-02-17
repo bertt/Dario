@@ -13,6 +13,7 @@ namespace Dario
             app.UseWebApi(Config.GetHttpConfiguration());
             app.UseWelcomePage();
             app.UseErrorPage();
+            // the next line is needed for handling the UriPathExtensionMapping...
             app.UseStageMarker(PipelineStage.MapHandler);
         }
     }
