@@ -7,7 +7,7 @@ namespace Dario.Tests
 {
     public class VersionResourceTests
     {
-        private const string Testserver = "http://localhost:1234";
+        private const string Testserver = "http://localhost:1223";
 
         [Test]
         public async void HomeTest()
