@@ -11,7 +11,7 @@ Features:
 - 100% OGC free
 
 Api:
-- http get /api: returns homedocumet
+- http get /api: returns homedocument
 - http get /api/version: returns version
 - http get /api/tile: returns very first tile 
 
