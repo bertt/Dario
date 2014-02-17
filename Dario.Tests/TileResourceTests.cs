@@ -25,6 +25,17 @@ namespace Dario.Tests
             }
         }
 
-
+        [Test]
+        public async void TileWithExtTest()
+        {
+            using (WebApp.Start<Startup>(Testserver))
+            {
+                var httpclient = new HttpClient { BaseAddress = new Uri(Testserver) };
+                var response = await httpclient.GetAsync("/api/tile.png");
+                var stream = await response.Content.ReadAsStreamAsync();
+                var image = Image.FromStream(stream);
+                Assert.True(image.Width > 0);
+            }
+        }
     }
 }

@@ -9,10 +9,10 @@ namespace Dario.Models
         {
             var config = new HttpConfiguration();
             var formatters = config.Formatters;
-            formatters.Remove(formatters.XmlFormatter);
             formatters.Add(new PngMediaTypeFormatter());
-            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional});
-            config.Routes.MapHttpRoute("DefaultApiWithExt", "api/{controller}.{ext}");
+            formatters.Remove(formatters.XmlFormatter);
+            config.Routes.MapHttpRoute("DefaultApiWithExt", "api/{controller}.{ext}/{id}", new { id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("Home", "api", new { controller = "Home" });
             return config;
         }

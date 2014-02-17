@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin;
+using Microsoft.Owin.Extensions;
 using Owin;
 using Dario.Models;
 
@@ -10,6 +11,9 @@ namespace Dario
         public void Configuration(IAppBuilder app)
         {
             app.UseWebApi(Config.GetHttpConfiguration());
+            //app.UseWelcomePage();
+            app.UseErrorPage();
+            app.UseStageMarker(PipelineStage.MapHandler);
         }
     }
 }

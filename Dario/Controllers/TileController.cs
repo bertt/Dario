@@ -10,11 +10,14 @@ namespace Dario.Controllers
     {
         public HttpResponseMessage GetTile()
         {
-            var bitmap = new Bitmap(50, 50, PixelFormat.Format32bppArgb);
+            var bitmap = new Bitmap(200, 200, PixelFormat.Format32bppArgb);
             var graphics = Graphics.FromImage(bitmap);
             var pen = new Pen(Color.Black);
-            graphics.DrawLine(pen,0,0,50,50);
-            return Request.CreateResponse(HttpStatusCode.OK, (Image)bitmap);
+            pen.Width = 6;
+            graphics.DrawLine(pen,0,0,200,200);
+            graphics.DrawLine(pen, 200, 0, 0, 200);
+            var image = (Image) bitmap;
+            return Request.CreateResponse(HttpStatusCode.OK, image);
         }
 
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
