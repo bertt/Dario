@@ -97,7 +97,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TileController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
+    <Compile Include="Formatters\PngMediaTypeFormatter.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
