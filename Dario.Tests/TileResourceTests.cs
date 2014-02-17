@@ -12,7 +12,7 @@ namespace Dario.Tests
         private const string Testserver = "http://localhost:1223";
 
         [Test]
-        public async void HomeTest()
+        public async void TileTest()
         {
             using (WebApp.Start<Startup>(Testserver))
             {

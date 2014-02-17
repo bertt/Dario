@@ -10,7 +10,7 @@ namespace Dario.Tests
         private const string Testserver = "http://localhost:1223";
 
         [Test]
-        public async void HomeTest()
+        public async void VersionTest()
         {
             var i = WebApp.Start<Startup>(Testserver);
             using (i)
