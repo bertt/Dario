@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
-using System.Web.Http;
 using Dario.Models;
 
 [assembly: OwinStartup(typeof(Dario.Startup))]
