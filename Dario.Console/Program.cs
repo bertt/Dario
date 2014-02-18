@@ -25,7 +25,8 @@ namespace Dario.Console
                 QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-            using (WebApp.Start<Startup>(string.Format(server, port)))
+            //using (WebApp.Start<Startup>(string.Format(server, port)))
+            using (WebApp.Start<Startup>(string.Format("http://*:{0}", port)))
             {
                 System.Console.WriteLine("Started, running on port: {0}",port);
                 QuitEvent.WaitOne();
