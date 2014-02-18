@@ -1,7 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using ConfigR;
+using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Owin;
-using Dario.Models;
 
 [assembly: OwinStartup(typeof(Dario.Startup))]
 namespace Dario
@@ -10,7 +10,9 @@ namespace Dario
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseWebApi(Config.GetHttpConfiguration());
+            var c= Config.Global.LoadScriptFile("config.csx");
+            var s=c["builtfor"];
+            app.UseWebApi(Dario.Models.Config.GetHttpConfiguration());
             app.UseWelcomePage();
             app.UseErrorPage();
             // the next line is needed for handling the UriPathExtensionMapping...
