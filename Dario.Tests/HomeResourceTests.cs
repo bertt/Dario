@@ -15,7 +15,7 @@ namespace Dario.Tests
             using (WebApp.Start<Startup>(Testserver))
             {
                 var httpclient = new HttpClient{ BaseAddress = new Uri(Testserver) };
-                var response = await httpclient.GetAsync("/api");
+                var response = await httpclient.GetAsync("api");
                 var res = await response.Content.ReadAsStringAsync();
                 Assert.True(res.Contains("home"));
             }

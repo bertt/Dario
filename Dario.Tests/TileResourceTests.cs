@@ -18,7 +18,7 @@ namespace Dario.Tests
             {
                 var httpclient = new HttpClient { BaseAddress = new Uri(Testserver) };
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
-                var response = await httpclient.GetAsync("/api/tile");
+                var response = await httpclient.GetAsync("api/tile");
                 var stream = await response.Content.ReadAsStreamAsync();
                 var image = Image.FromStream(stream);
                 Assert.True(image.Width>0);

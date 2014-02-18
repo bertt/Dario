@@ -16,7 +16,7 @@ namespace Dario.Tests
             using (i)
             {
                 var httpclient = new HttpClient { BaseAddress = new Uri(Testserver) };
-                var response = await httpclient.GetAsync("/api/version");
+                var response = await httpclient.GetAsync("api/version");
                 var res = await response.Content.ReadAsStringAsync();
                 Assert.True(res.Contains("0.1"));
             }

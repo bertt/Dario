@@ -12,8 +12,7 @@ namespace Dario.Controllers
         {
             var bitmap = new Bitmap(200, 200, PixelFormat.Format32bppArgb);
             var graphics = Graphics.FromImage(bitmap);
-            var pen = new Pen(Color.Black);
-            pen.Width = 6;
+            var pen = new Pen(Color.Black) {Width = 6};
             graphics.DrawLine(pen,0,0,200,200);
             graphics.DrawLine(pen, 200, 0, 0, 200);
             var image = (Image) bitmap;
