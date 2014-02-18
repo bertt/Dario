@@ -27,7 +27,7 @@ namespace Dario.Console
             };
             using (WebApp.Start<Startup>(string.Format(server, port)))
             {
-                System.Console.WriteLine("Started");
+                System.Console.WriteLine("Started, running on port: {0}",port);
                 QuitEvent.WaitOne();
             }
 
