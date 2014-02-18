@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using System.Threading;
+using Owin;
 
 namespace Dario.Console
 {
@@ -25,8 +26,8 @@ namespace Dario.Console
                 QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-            using (WebApp.Start<Startup>(string.Format(server, port)))
-            //using (WebApp.Start<Startup>(string.Format("http://*:{0}", port)))
+            //using (WebApp.Start<Startup1>(string.Format(server, port)))
+            using (WebApp.Start<Startup1>(string.Format("http://*:{0}", port)))
             {
                 System.Console.WriteLine("Started, running on port: {0}",port);
                 QuitEvent.WaitOne();
@@ -34,4 +35,21 @@ namespace Dario.Console
 
         }
     }
+
+    public class Startup1
+    {
+
+        public void Configuration(IAppBuilder app)
+        {
+            /**app.UseHandlerAsync((req, res) =>
+            {
+                res.ContentType = "text/plain";
+                return res.WriteAsync("Hallo hallo");
+            });*/
+            app.UseWelcomePage();
+        }
+
+
+    }
+
 }
