@@ -14,6 +14,7 @@ namespace Dario.Models
             config.Routes.MapHttpRoute("DefaultApiWithExt", "api/{controller}.{ext}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("Home", "api", new { controller = "Home" });
+            config.MapHttpAttributeRoutes();
             return config;
         }
     }
