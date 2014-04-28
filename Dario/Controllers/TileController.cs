@@ -1,9 +1,10 @@
-﻿using System.Drawing.Imaging;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Dario.Models;
+using ConfigR;
+using Dario.Providers;
 
 namespace Dario.Controllers
 {
@@ -13,18 +14,44 @@ namespace Dario.Controllers
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
         public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
         {
-            var mbtiledb = @"E:\bertt\skydrive\dev\research\140424_gdal\testdata\geodata.mbtiles";
-
-            var _connectionString = string.Format("Data Source={0}; FailIfMissing=False", mbtiledb);
-            var mbTileProvider = new MbTileProvider(_connectionString);
+            //var mbtiledb = @"E:\dev\git\bertt\Dario\Dario\data\mbtiles\geodata.mbtiles";
+            var c= ConfigR.Config.Global.LoadScriptFile("config.csx");
+            var mbtiledb=c["mbtiles"];
+            var connectionString = string.Format("Data Source={0}; FailIfMissing=False", mbtiledb);
+            var mbTileProvider = new MbTileProvider(connectionString);
             var image = mbTileProvider.GetTile(level, col, row);
-            var httpResponseMessage = new HttpResponseMessage();
-            var memoryStream = new MemoryStream();
-            image.Save(memoryStream, ImageFormat.Jpeg);
-            httpResponseMessage.Content = new ByteArrayContent(memoryStream.ToArray());
-            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            httpResponseMessage.StatusCode = HttpStatusCode.OK;            
+            if (image != null)
+            {
+                var bytes = ImageConvertor.Convert(image, ext);
+                var contentType = getMediaType(ext);
+                return GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
+            }
+            return new HttpResponseMessage{StatusCode = HttpStatusCode.NotFound};
+        }
+
+        internal HttpResponseMessage GetHttpResponseMessage(byte[] content, string contentType, HttpStatusCode code)
+        {
+            var httpResponseMessage = new HttpResponseMessage {Content = new ByteArrayContent(content)};
+            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            httpResponseMessage.StatusCode = HttpStatusCode.OK;
             return httpResponseMessage;
+            
+        }
+
+        private string getMediaType(string ext)
+        {
+            var mediatype = "image/jpeg";
+            switch (ext)
+            {
+                case "gif":
+                    mediatype = "image/gif";
+                    break;
+                case "png":
+                    mediatype = "image/png";
+                    break;
+            }
+            return mediatype;
+
         }
     }
 }

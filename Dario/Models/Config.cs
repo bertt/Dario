@@ -9,7 +9,7 @@ namespace Dario.Models
         {
             var config = new HttpConfiguration();
             var formatters = config.Formatters;
-            formatters.Add(new PngMediaTypeFormatter());
+            //formatters.Add(new PngMediaTypeFormatter());
             formatters.Remove(formatters.XmlFormatter);
             config.Routes.MapHttpRoute("DefaultApiWithExt", "api/{controller}.{ext}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });

@@ -2,34 +2,37 @@
 using System.Drawing;
 using System.IO;
 
-namespace Dario
+namespace Dario.Providers
 {
     public class MbTileProvider
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public MbTileProvider(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public Image GetTile(string Level, int Col, int Row)
+        public Image GetTile(string level, int col, int row)
         {
-            var _connection = new SQLiteConnection(_connectionString);
-            _connection.Open();
-            Image image;
-            using (var command = new SQLiteCommand(_connection))
+            var connection = new SQLiteConnection(_connectionString);
+            connection.Open();
+            Image image=null;
+            using (var command = new SQLiteCommand(connection))
             {
                 command.CommandText = "SELECT [tile_data] FROM [tiles] WHERE zoom_level = @zoom AND tile_column = @col AND tile_row = @row";
-                command.Parameters.Add(new SQLiteParameter("zoom", Level));
-                command.Parameters.Add(new SQLiteParameter("col", Col));
-                command.Parameters.Add(new SQLiteParameter("row", Row));
+                command.Parameters.Add(new SQLiteParameter("zoom", level));
+                command.Parameters.Add(new SQLiteParameter("col", col));
+                command.Parameters.Add(new SQLiteParameter("row", row));
                 var tileObj = command.ExecuteScalar();
-                var stream = new MemoryStream((byte[])tileObj);
-                var bitmap = new Bitmap(stream);
-                image = bitmap;
+                if (tileObj != null)
+                {
+                    var stream = new MemoryStream((byte[])tileObj);
+                    var bitmap = new Bitmap(stream);
+                    image = bitmap;
+                }
             }
-            _connection.Close();
+            connection.Close();
             return image;
         }
     }

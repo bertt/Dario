@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace Dario.Models
 {
     public class ImageConvertor
     {
-        public static Image Convert(Image image, string outputformat)
+        public static byte[] Convert(Image image, string outputformat)
         {
-            return null;
+            var memoryStream = new MemoryStream();
+            var imageFormat = ImageFormat.Jpeg;
+            switch (outputformat)
+            {
+                case "png":
+                    imageFormat = ImageFormat.Png;
+                    break;
+                case "gif":
+                    imageFormat = ImageFormat.Gif;
+                    break;
+            }
+            image.Save(memoryStream, imageFormat);
+            return memoryStream.ToArray();
         }
     }
 }

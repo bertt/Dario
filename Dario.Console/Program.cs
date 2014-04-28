@@ -1,6 +1,5 @@
 ﻿using Microsoft.Owin.Hosting;
 using System.Threading;
-using Owin;
 
 namespace Dario.Console
 {
