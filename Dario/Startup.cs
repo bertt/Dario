@@ -1,5 +1,4 @@
-﻿using ConfigR;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Owin;
 
@@ -19,8 +18,3 @@ namespace Dario
         }
     }
 }
-
-
-// test with configr:
-//var c= Config.Global.LoadScriptFile("config.csx");
-//var s=c["builtfor"];

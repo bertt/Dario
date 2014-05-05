@@ -1,5 +1,4 @@
 ﻿using System.Web.Http;
-using Dario.Formatters;
 
 namespace Dario.Models
 {
