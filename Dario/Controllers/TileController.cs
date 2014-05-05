@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,27 +19,43 @@ namespace Dario.Controllers
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
             var lyrs = layers.Split(',');
+            var images = GetImages(mbtiledir,lyrs,level,col,row);
+
+            if (images.Count > 0)
+            {
+                var resultimage = ImageMerger.Merge(images);
+
+                if (resultimage != null)
+                {
+                    var bytes = ImageConvertor.Convert(resultimage, ext);
+                    var contentType = getMediaType(ext);
+                    return GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
+                }
+            }
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
+        }
+
+        private List<Image> GetImages(string mbtiledir, IEnumerable<string> lyrs, string level, int col, int row)
+        {
             var images = new List<Image>();
 
             foreach (var lyr in lyrs)
             {
-                var mbtiledb = getDataSource(lyr);
-                var connectionString = string.Format("Data Source={0}", mbtiledir + mbtiledb);
-                var mbTileProvider = new MbTileProvider(connectionString);
-                var image = mbTileProvider.GetTile(level, col, row);
-                images.Add(image);
-            }
+                var mbtiledb = mbtiledir + getDataSource(lyr);
+                if (File.Exists(mbtiledb))
+                {
+                    var connectionString = string.Format("Data Source={0}", mbtiledb);
+                    var mbTileProvider = new MbTileProvider(connectionString);
 
-            var resultimage = ImageMerger.Merge(images);
-
-            if (resultimage != null)
-            {
-                var bytes = ImageConvertor.Convert(resultimage, ext);
-                var contentType = getMediaType(ext);
-                return GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
+                    var image = mbTileProvider.GetTile(level, col, row);
+                    if (image != null)
+                    {
+                        images.Add(image);
+                    }
+                }
             }
-            return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-        }
+            return images;
+        } 
 
 
         internal HttpResponseMessage GetHttpResponseMessage(byte[] content, string contentType, HttpStatusCode code)
