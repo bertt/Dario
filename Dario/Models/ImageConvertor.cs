@@ -18,6 +18,9 @@ namespace Dario.Models
                 case "gif":
                     imageFormat = ImageFormat.Gif;
                     break;
+                case "jpg":
+                    imageFormat = ImageFormat.Jpeg;
+                    break;
             }
             image.Save(memoryStream, imageFormat);
             return memoryStream.ToArray();

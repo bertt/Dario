@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +16,7 @@ namespace Dario.Controllers
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
         public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
         {
-            var mbtiledir = @"E:\dev\git\bertt\Dario\Dario\data\mbtiles\";
+            var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
             var lyrs = layers.Split(',');
             var images = new List<Image>();
 
