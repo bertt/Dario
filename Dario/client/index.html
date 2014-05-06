@@ -6,16 +6,16 @@
 
 </head>
 <body>
-    <div id="map" style="width: 1200px; height: 800px"></div>
+    <div id="map" style="width: 1600px; height: 1000px"></div>
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
     <script>
         var map = L.map('map').setView([38.82259, -2.8125], 3);
 
         //L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        L.tileLayer('/countries,cities/{z}/{x}/{y}.png', {
+        L.tileLayer('/OpenCycleMap,cities/{z}/{x}/{y}.png', {
             //maxZoom: 18,
-            tms: true,
+            // tms: true,
             id: 'examples.map-9ijuk24y'
         }).addTo(map);
 
