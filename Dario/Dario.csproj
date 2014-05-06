@@ -145,6 +145,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="client\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -174,8 +177,8 @@
     <Compile Include="Providers\MbTileProvider.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ImageMerger.cs" />
-    <Compile Include="Models\Tilestacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\BrutTileProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\HomeResourceTests.cs" />
     <Compile Include="Tests\PngMediaTypeFormatterTests.cs" />

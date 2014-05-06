@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BruTile.Web;
 using Dario.Models;
 using Dario.Providers;
 
@@ -13,13 +15,13 @@ namespace Dario.Controllers
 {
     public class TileController : ApiController
     {
-        // testurl http://localhost:49430/countries,cities/6/36/39.jpg
+        // testurl http://localhost:49430/stamentoner,countries,cities/6/36/39.jpg
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
         public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
             var lyrs = layers.Split(',');
-            var images = GetImages(mbtiledir,lyrs,level,col,row);
+            var images = GetMbTileImages(mbtiledir,lyrs,level,col,row);
 
             if (images.Count > 0)
             {
@@ -35,24 +37,33 @@ namespace Dario.Controllers
             return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
         }
 
-        private List<Image> GetImages(string mbtiledir, IEnumerable<string> lyrs, string level, int col, int row)
+        private List<Image> GetMbTileImages(string mbtiledir, IEnumerable<string> lyrs, string level, int col, int row)
         {
             var images = new List<Image>();
-
+            Image image=null;
             foreach (var lyr in lyrs)
             {
-                var mbtiledb = mbtiledir + getDataSource(lyr);
-                if (File.Exists(mbtiledb))
+                KnownTileServers c;
+                if(Enum.TryParse(lyr, true, out c))
                 {
-                    var connectionString = string.Format("Data Source={0}", mbtiledb);
-                    var mbTileProvider = new MbTileProvider(connectionString);
-
-                    var image = mbTileProvider.GetTile(level, col, row);
-                    if (image != null)
+                    image= BrutTileProvider.GetTile(lyr, level, col, row);
+                }
+                else
+                {
+                    var mbtiledb = mbtiledir + getDataSource(lyr);
+                    if (File.Exists(mbtiledb))
                     {
-                        images.Add(image);
+                        var connectionString = string.Format("Data Source={0}", mbtiledb);
+                        var mbTileProvider = new MbTileProvider(connectionString);
+                        image = mbTileProvider.GetTile(level, col, row);
                     }
                 }
+
+                if (image != null)
+                {
+                    images.Add(image);
+                }
+
             }
             return images;
         } 
