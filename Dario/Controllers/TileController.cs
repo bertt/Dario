@@ -20,6 +20,7 @@ namespace Dario.Controllers
         public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
+            // MbTilesTileSource.
             var lyrs = layers.Split(',');
             var images = GetMbTileImages(mbtiledir,lyrs,level,col,row);
 
