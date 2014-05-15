@@ -1,0 +1,18 @@
+﻿{
+  "currentVersion": 10.12,
+  "folders": [],
+  "services": [
+    {
+      "name": "GeocodeBroker",
+      "type": "GeocodeServer"
+    },
+    {
+      "name": "Treinen",
+      "type": "FeatureServer"
+    }
+    { 
+        "name":"Geometry",
+        "type":"GeometryServer"
+    }
+  ]
+}

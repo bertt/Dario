@@ -22,7 +22,7 @@ namespace Dario.Controllers
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
             // MbTilesTileSource.
             var lyrs = layers.Split(',');
-            var images = GetMbTileImages(mbtiledir,lyrs,level,col,row);
+             var images = GetTileImages(mbtiledir,lyrs,level,col,row);
 
             if (images.Count > 0)
             {
@@ -38,7 +38,7 @@ namespace Dario.Controllers
             return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
         }
 
-        private List<Image> GetMbTileImages(string mbtiledir, IEnumerable<string> lyrs, string level, int col, int row)
+        private List<Image> GetTileImages(string mbtiledir, IEnumerable<string> lyrs, string level, int col, int row)
         {
             var images = new List<Image>();
             Image image=null;
@@ -54,9 +54,14 @@ namespace Dario.Controllers
                     var mbtiledb = mbtiledir + getDataSource(lyr);
                     if (File.Exists(mbtiledb))
                     {
+                        // todo: hoe werkt dit?
+                        var ymax = 1 << Int32.Parse(level);
+                        var y = ymax - row - 1;
+ 
+
                         var connectionString = string.Format("Data Source={0}", mbtiledb);
                         var mbTileProvider = new MbTileProvider(connectionString);
-                        image = mbTileProvider.GetTile(level, col, row);
+                        image = mbTileProvider.GetTile(level, col, y);
                     }
                 }
 

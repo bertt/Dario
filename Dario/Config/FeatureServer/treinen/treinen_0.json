@@ -1,0 +1,47 @@
+﻿{
+   "type": "PostGIS",
+   "dsn" : "Server=geodb;Database=gls;User Id=gls;Password=glspwd;Port=5433;Pooling=false",
+   "sql": "select trackeeid as id,dtgps as dategps, dtreceived as datereceived, st_x(geom_snapped) as longitude, st_y(geom_snapped) as latitude,event,
+            track,speed,dop,geocodedname as bps, o.name as organisation,t.name as trackee
+            from positions p
+            join trackees t
+            on p.trackeeid = t.id
+            join orgs o
+            on t.orgid = o.id
+            where o.name = 'Nederlandse Spoorwegen'",
+   "srid": "4326",
+   "fields": [
+    {
+        "name": "ID",
+        "alias": "ID",
+        "required": false,
+        "type": "esriFieldTypeInteger",
+        "length": 0,
+        "editable": false
+    },
+    {
+        "name": "Name",
+        "alias": "Name",
+        "required": false,
+        "type": "esriFieldTypeString",
+        "length": 0,
+        "editable": false
+    },
+    {
+        "name": "Date",
+        "alias": "date",
+        "required": false,
+        "type": "esriFieldTypeDate",
+        "length": 0,
+        "editable": false
+    },
+    {
+        "name": "Speed",
+        "alias": "Speed",
+        "required": false,
+        "type": "esriFieldTypeDouble",
+        "length": 0,
+        "editable": false
+    }
+ ] 
+}

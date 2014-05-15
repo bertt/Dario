@@ -24,6 +24,7 @@ namespace Dario.Providers
                 var tileInfo = new TileInfo();
                 var tileIndex = new TileIndex(col, row, level);
                 tileInfo.Index = tileIndex;
+               
                 var bytes = tileSource.Provider.GetTile(tileInfo);
                 var ms = new MemoryStream(bytes);
                 var image = Image.FromStream(ms);

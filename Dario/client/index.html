@@ -13,12 +13,13 @@
         var map = L.map('map').setView([38.82259, -2.8125], 3);
 
         //L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        L.tileLayer('/OpenCycleMap,cities/{z}/{x}/{y}.png', {
-            //maxZoom: 18,
-            // tms: true,
+        //L.tileLayer('/countries,cities/{z}/{x}/{y}.png', {
+        L.tileLayer('/mapnik,cities/{z}/{x}/{y}.png', {
+        //maxZoom: 18,
+            tms: false,
             id: 'examples.map-9ijuk24y'
         }).addTo(map);
-
+        
     </script>
 
 </body>

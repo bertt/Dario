@@ -1,0 +1,14 @@
+﻿{
+  "serviceDescription": "bert test service",
+  "hasVersionedData": false,
+  "supportsDisconnectedEditing": false,
+  "hasStaticData": false,
+  "maxRecordCount": 0,
+  "allowGeometryUpdates": false,
+  "layers": [
+    {
+      "id": 0,
+      "name": "testlayer"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 
 namespace Dario.Controllers
 {
@@ -6,6 +7,9 @@ namespace Dario.Controllers
     {
         public string GetHome()
         {
+            // use this?
+            // var cd = AppDomain.CurrentDomain.BaseDirectory;
+            
             return "home";
         }
     }
