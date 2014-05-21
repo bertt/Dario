@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+
+</head>
+    <body>
+        <h2>Dario Demo pages - Tms Tiles</h2>
+        
+        <h3>.1 getTile request</h3>
+        <a href="../mapnik,cities/3/7/2.png">Get jpg tile with mapnik and cities from MbTiles</a><br />
+        <a href="../mapnik,cities/3/7/2.jpg">Get png tile with mapnik and cities from MbTiles</a><br />
+        <a href="../stamentoner,cities/3/7/2.jpg">Get png tile with stamen and cities from MbTiles</a><br />
+        <br/>
+        <h3>.2 leaflet demo</h3>
+        <div id="map" style="width: 1600px; height: 1000px"></div>
+
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+        <script>
+            var map = L.map('map').setView([38.82259, -2.8125], 3);
+
+            //L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+            //L.tileLayer('/countries,cities/{z}/{x}/{y}.png', {
+            L.tileLayer('/mapnik,cities/{z}/{x}/{y}.png', {
+                //maxZoom: 18,
+                tms: false,
+                id: 'examples.map-9ijuk24y'
+            }).addTo(map);
+        
+        </script>
+
+    </body>
+</html>

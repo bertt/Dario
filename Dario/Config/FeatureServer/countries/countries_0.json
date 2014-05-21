@@ -1,0 +1,23 @@
+﻿{
+   "type": "GeoJSON",
+   "file" : "E:\\dev\\git\\bertt\\Dario\\Dario\\data\\countries.geo.json",
+   "srid": "4326",
+   "fields": [
+    {
+        "name": "ID",
+        "alias": "ID",
+        "required": false,
+        "type": "esriFieldTypeString",
+        "length": 0,
+        "editable": false
+    },
+    {
+        "name": "Name",
+        "alias": "Name",
+        "required": false,
+        "type": "esriFieldTypeString",
+        "length": 0,
+        "editable": false
+    }
+ ] 
+}

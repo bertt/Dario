@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Dario.Models;
 using Newtonsoft.Json;
 using Npgsql;
 using Dapper;
@@ -59,7 +60,35 @@ namespace Dario.Controllers
         {
             // open settings for service, layer
             dynamic result;
-            result.objectIdFieldName = "ID";
+
+
+            // first let's read the config file
+            var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
+            var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + ".json";
+            if (File.Exists(path))
+            {
+                var stream = new FileStream(path, FileMode.Open);
+                var content = new StreamContent(stream).ReadAsStringAsync().Result;
+                dynamic o = JsonConvert.DeserializeObject(content);
+                var datasourceType = (DatasourceTypes) o.type;
+
+                switch (datasourceType)
+                {
+                    case DatasourceTypes.Geojson:
+                        var file = (string)o.file;
+                        ReadGeojson(file);
+                        break;
+                    case DatasourceTypes.Postgis:
+                        var dsn = (string)o.dsn;
+                        var sql = (string)o.sql;
+                        ReadPostgis(dsn, sql);
+                        break;
+                }
+
+            }
+
+
+            //result.objectIdFieldName = "ID";
 
 
             /**
@@ -91,6 +120,31 @@ namespace Dario.Controllers
 
             return null;
         }
+
+        private void ReadGeojson(string file)
+        {
+            var stream = new FileStream(file, FileMode.Open);
+            var content = new StreamContent(stream).ReadAsStringAsync().Result;
+            var geojson = JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(content);
+
+            // dynamic o = JsonConvert.DeserializeObject(content);
+
+        }
+
+        private void ReadPostgis(string connectionString, string sql)
+        {
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                var res = conn.Query(sql);
+                foreach (var p in res)
+                {
+                    // todo: create something here
+
+                }
+            }
+        }
+
 
     }
 }

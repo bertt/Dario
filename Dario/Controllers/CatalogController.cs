@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -15,6 +14,8 @@ namespace Dario.Controllers
         public HttpResponseMessage GetCatalog()
         {
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
+
+            // todo read dynamicly from config directory
             var path = agsConfigDir + "catalog.json";
             var result = Request.CreateResponse(HttpStatusCode.OK);
             var stream = new FileStream(path, FileMode.Open);

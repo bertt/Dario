@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+    <body>
+        <h2>Dario Demo pages - Esri Geometry</h2>
+        <h3>.1 Project request</h3>
+        <a href="../rest/services/Geometry/GeometryServer/project?inSR=4326&outSR=102113&geometries={" geometrytype":"esrigeometrypoint","geometries":[{"x":-117,"y":34}]}">project request</a><br />
+        <h3>.2 Simplify request</h3>
+        <a href="../rest/services/Geometry/GeometryServer/simplify?sr=4326&geometries={" geometrytype":"esrigeometrypolygon","geometries":[{"rings":[[[-117,34],[-115,36],[-115,33],[-117,36],[-117,34]]]}]}">simplify request</a><br />
+        <h3>.3 Buffer</h3>
+        <a href="../rest/services/Geometry/GeometryServer/buffer?geometries=-117,34&inSR=4326&outSR=4326&bufferSR=102113&distances=1000">buffer request</a><br />
+    </body>
+</html>

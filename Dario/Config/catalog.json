@@ -9,6 +9,10 @@
     {
       "name": "Treinen",
       "type": "FeatureServer"
+    },
+    {
+      "name": "Countries",
+      "type": "FeatureServer"
     }
     { 
         "name":"Geometry",

@@ -2,25 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-
 </head>
 <body>
-    <div id="map" style="width: 1600px; height: 1000px"></div>
-
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-    <script>
-        var map = L.map('map').setView([38.82259, -2.8125], 3);
-
-        //L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        //L.tileLayer('/countries,cities/{z}/{x}/{y}.png', {
-        L.tileLayer('/mapnik,cities/{z}/{x}/{y}.png', {
-        //maxZoom: 18,
-            tms: false,
-            id: 'examples.map-9ijuk24y'
-        }).addTo(map);
-        
-    </script>
-
+    <h2>Dario Demo pages - Index</h2>
+    <br/>
+    <h3>.1 Tms Tiles</h3>
+    <a href="tiles.html">tiles page</a><br/>
+    <h3>.2 Esri Features</h3>
+    <a href="features.html">features page</a><br />
+    <h3>.3 Esri Catalog</h3>
+    <a href="catalog.html">catalog page</a><br />
+    <h3>.3 Esri geometry</h3>
+    <a href="geometry.html">geometry page</a><br />
+    <h3>.3 Esri geocoding</h3>
+    <a href="geocoding.html">geocoding page</a><br />
 </body>
 </html>
