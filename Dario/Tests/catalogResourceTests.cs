@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Net.Http;
-using System.Web;
 using Microsoft.Owin.Hosting;
 using NUnit.Framework;
 
