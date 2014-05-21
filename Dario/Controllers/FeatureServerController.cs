@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Dario.Core.Esri;
 using Dario.Models;
 using Newtonsoft.Json;
 using Npgsql;
@@ -42,9 +43,9 @@ namespace Dario.Controllers
             string geometry = "",
             string geometryType = "",
             string geometryPrecision = "",
-            string inSR = "",
+            string inSr = "",
             string spatialRel = "",
-            string outSR = "",
+            string outSr = "",
             string returnIdsOnly = "",
             string returnCountOnly = "",
             string maxAllowableOffset = "",
@@ -125,9 +126,11 @@ namespace Dario.Controllers
         {
             var stream = new FileStream(file, FileMode.Open);
             var content = new StreamContent(stream).ReadAsStringAsync().Result;
-            var geojson = JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(content);
+            var featurecollection = JsonConvert.DeserializeObject<FeatureCollection>(content);
 
-            // dynamic o = JsonConvert.DeserializeObject(content);
+            // todo: convert to esri format
+
+            // and return the Esri featurecollection
 
         }
 

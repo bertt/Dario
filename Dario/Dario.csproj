@@ -62,9 +62,6 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="GeoJSON.Net">
-      <HintPath>..\packages\GeoJSON.Net.0.0.0.5\lib\GeoJSON.Net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -223,6 +220,10 @@
     <ProjectReference Include="..\Dario.Core.Esri\Dario.Core.Esri.csproj">
       <Project>{447af2f9-8857-48b7-b8c6-796093344b1a}</Project>
       <Name>Dario.Core.Esri</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dario.Core.GeoJson\Dario.Core.GeoJson.csproj">
+      <Project>{15f7df9c-eabd-4e3c-8048-17f22998d2da}</Project>
+      <Name>Dario.Core.GeoJson</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
