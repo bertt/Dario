@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{996b538f-7555-4f17-bd8f-6f92b2e309c4}</ProjectGuid>
+    <ProjectGuid>{996B538F-7555-4F17-BD8F-6F92B2E309C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dario.Core.Convertors</RootNamespace>
@@ -35,9 +35,17 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\Dario.Core.Esri\Dario.Core.Esri.csproj">
+      <Project>{447af2f9-8857-48b7-b8c6-796093344b1a}</Project>
+      <Name>Dario.Core.Esri</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dario.Core.GeoJson\Dario.Core.GeoJson.csproj">
+      <Project>{15f7df9c-eabd-4e3c-8048-17f22998d2da}</Project>
+      <Name>Dario.Core.GeoJson</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="GeoJsonExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -48,5 +56,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>

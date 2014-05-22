@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using Dario.Core.Esri;
+using Dario.Core.GeoJson;
 using Dario.Models;
 using Newtonsoft.Json;
 using Npgsql;
@@ -68,6 +68,7 @@ namespace Dario.Controllers
             var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + ".json";
             if (File.Exists(path))
             {
+                File.ReadAllText(path);
                 var stream = new FileStream(path, FileMode.Open);
                 var content = new StreamContent(stream).ReadAsStringAsync().Result;
                 dynamic o = JsonConvert.DeserializeObject(content);
@@ -88,44 +89,12 @@ namespace Dario.Controllers
 
             }
 
-
-            //result.objectIdFieldName = "ID";
-
-
-            /**
-            var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
-            var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + ".json";
-            if (File.Exists(path))
-            {
-                var stream = new FileStream(path, FileMode.Open);
-                var content = new StreamContent(stream).ReadAsStringAsync().Result;
-                dynamic o = JsonConvert.DeserializeObject(content);
-                var sql = (string)o.sql;
-                var connectionString = (string) o.dsn;
-                using (var conn = new NpgsqlConnection(connectionString))
-                {
-                    conn.Open();
-                    var res = conn.Query(sql);
-                    foreach (var p in res)
-                    {
-                        
-                    }
-
-
-                }
-
-
-
-
-            }*/
-
             return null;
         }
 
         private void ReadGeojson(string file)
         {
-            var stream = new FileStream(file, FileMode.Open);
-            var content = new StreamContent(stream).ReadAsStringAsync().Result;
+            var content = File.ReadAllText(file);
             var featurecollection = JsonConvert.DeserializeObject<FeatureCollection>(content);
 
             // todo: convert to esri format
