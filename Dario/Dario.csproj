@@ -123,6 +123,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.1.2\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="WebApiContrib.Formatting.Jsonp, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\WebApiContrib\WebApiContrib.Formatting.Jsonp\src\WebApiContrib.Formatting.Jsonp\bin\Debug\WebApiContrib.Formatting.Jsonp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\catalog.html" />
@@ -133,21 +137,23 @@
     <Content Include="client\tiles.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Config\FeatureServer\countries\countries_0_server.json" />
     <Content Include="packages.config" />
     <Content Include="x64\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="x86\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\catalog.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\FeatureServer\treinen\treinen_0.json" />
+    <Content Include="Config\FeatureServer\treinen\treinen_0_server.json" />
     <Content Include="Config\FeatureServer\treinen\treinen.json" />
     <Content Include="data\countries.geo.json" />
     <Content Include="Config\FeatureServer\countries\countries.json" />
     <Content Include="Config\FeatureServer\countries\countries_0.json" />
+    <Content Include="Config\FeatureServer\treinen\treinen_0.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -170,6 +176,7 @@
     <Compile Include="Formatters\PngMediaTypeFormatter.cs" />
     <Compile Include="Models\DatasourceTypes.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
+    <Compile Include="Models\JsonResponseMessage.cs" />
     <Compile Include="Providers\MbTileProvider.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ImageMerger.cs" />
@@ -187,6 +194,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dario.Core.Convertors\Dario.Core.Convertors.csproj">
+      <Project>{996b538f-7555-4f17-bd8f-6f92b2e309c4}</Project>
+      <Name>Dario.Core.Convertors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dario.Core.Esri\Dario.Core.Esri.csproj">
       <Project>{447af2f9-8857-48b7-b8c6-796093344b1a}</Project>
       <Name>Dario.Core.Esri</Name>

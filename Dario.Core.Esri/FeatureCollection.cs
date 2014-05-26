@@ -4,6 +4,12 @@ namespace Dario.Core.Esri
 {
     public class FeatureCollection
     {
+        public FeatureCollection()
+        {
+            fields=new List<Field>();
+            features=new List<Feature>();
+        }
+
         public string objectIdFieldName { get; set; }
         public string globalIdFieldName { get; set; }
         public string geometryType { get; set; }

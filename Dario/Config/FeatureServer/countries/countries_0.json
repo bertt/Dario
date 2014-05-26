@@ -1,7 +1,25 @@
 ﻿{
-   "type": "GeoJSON",
-   "file" : "E:\\dev\\git\\bertt\\Dario\\Dario\\data\\countries.geo.json",
-   "srid": "4326",
+   "currentVersion": 10.1, 
+   "id": 0, 
+   "name": "Countries", 
+   "type": "Feature Layer", 
+   "displayField": "Name", 
+   "objectIdField": "ID",
+   "description": "",
+   "copyrightText": "", 
+   "defaultVisibility": true, 
+   "isDataVersioned": false, 
+   "supportsRollbackOnFailureParameter": false,
+   "supportsAdvancedQueries": false, 
+   "geometryType": "esriGeometryPolygon", 
+   "minScale": 0, 
+   "maxScale": 0,
+   "hasStaticData": false, 
+   "maxRecordCount": 1000, 
+   "capabilities": "Query",
+   "supportedQueryFormats": "JSON", 
+   "extent": { "xmin": -180, "ymin": -90, "xmax": 180, "ymax": 90 , "spatialReference": { "wkid": 4326, "latestWkid": 4326 } },
+
    "fields": [
     {
         "name": "ID",
@@ -19,5 +37,5 @@
         "length": 0,
         "editable": false
     }
- ] 
+   ] 
 }

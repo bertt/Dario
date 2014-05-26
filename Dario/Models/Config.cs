@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Net.Http.Formatting;
+using System.Web.Http;
+using WebApiContrib.Formatting.Jsonp;
 
 namespace Dario.Models
 {
@@ -8,12 +10,12 @@ namespace Dario.Models
         {
             var config = new HttpConfiguration();
             var formatters = config.Formatters;
-            //formatters.Add(new PngMediaTypeFormatter());
             formatters.Remove(formatters.XmlFormatter);
             config.Routes.MapHttpRoute("DefaultApiWithExt", "api/{controller}.{ext}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("Home", "api", new { controller = "Home" });
             config.MapHttpAttributeRoutes();
+            formatters.Add(new JsonpMediaTypeFormatter(new JsonMediaTypeFormatter()));
             return config;
         }
     }

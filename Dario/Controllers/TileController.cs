@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
 using BruTile.Web;
 using Dario.Models;
@@ -20,7 +19,6 @@ namespace Dario.Controllers
         public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
-            // MbTilesTileSource.
             var lyrs = layers.Split(',');
              var images = GetTileImages(mbtiledir,lyrs,level,col,row);
 
@@ -32,7 +30,7 @@ namespace Dario.Controllers
                 {
                     var bytes = ImageConvertor.Convert(resultimage, ext);
                     var contentType = getMediaType(ext);
-                    return GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
+                    return JsonResponseMessage.GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
                 }
             }
             return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
@@ -75,14 +73,6 @@ namespace Dario.Controllers
         } 
 
 
-        internal HttpResponseMessage GetHttpResponseMessage(byte[] content, string contentType, HttpStatusCode code)
-        {
-            var httpResponseMessage = new HttpResponseMessage {Content = new ByteArrayContent(content)};
-            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-            httpResponseMessage.StatusCode = HttpStatusCode.OK;
-            return httpResponseMessage;
-            
-        }
 
         private string getMediaType(string ext)
         {

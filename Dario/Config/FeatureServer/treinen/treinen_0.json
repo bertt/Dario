@@ -1,21 +1,30 @@
 ﻿{
-   "type": "PostGIS",
-   "dsn" : "Server=geodb;Database=gls;User Id=gls;Password=glspwd;Port=5433;Pooling=false",
-   "sql": "select trackeeid as id,dtgps as dategps, dtreceived as datereceived, st_x(geom_snapped) as longitude, st_y(geom_snapped) as latitude,event,
-            track,speed,dop,geocodedname as bps, o.name as organisation,t.name as trackee
-            from positions p
-            join trackees t
-            on p.trackeeid = t.id
-            join orgs o
-            on t.orgid = o.id
-            where o.name = 'Nederlandse Spoorwegen'",
-   "srid": "4326",
+   "currentVersion": 10.1, 
+   "id": 0, 
+   "name": "Countries", 
+   "type": "Feature Layer", 
+   "displayField": "Name", 
+   "description": "",
+   "copyrightText": "", 
+   "defaultVisibility": true, 
+   "isDataVersioned": false, 
+   "supportsRollbackOnFailureParameter": false,
+   "supportsAdvancedQueries": false, 
+   "geometryType": "esriGeometryPoint", 
+   "minScale": 0, 
+   "maxScale": 0,
+   "hasStaticData": false, 
+   "maxRecordCount": 1000, 
+   "capabilities": "Query",
+   "supportedQueryFormats": "JSON", 
+   "extent": { "xmin": 3.793809, "ymin": 50.9010544, "xmax": 20.9302158, "ymax": 53.32563 , "spatialReference": { "wkid": 4326, "latestWkid": 4326 } },
+
    "fields": [
     {
         "name": "ID",
         "alias": "ID",
         "required": false,
-        "type": "esriFieldTypeInteger",
+        "type": "esriFieldTypeString",
         "length": 0,
         "editable": false
     },
@@ -26,22 +35,6 @@
         "type": "esriFieldTypeString",
         "length": 0,
         "editable": false
-    },
-    {
-        "name": "Date",
-        "alias": "date",
-        "required": false,
-        "type": "esriFieldTypeDate",
-        "length": 0,
-        "editable": false
-    },
-    {
-        "name": "Speed",
-        "alias": "Speed",
-        "required": false,
-        "type": "esriFieldTypeDouble",
-        "length": 0,
-        "editable": false
     }
- ] 
+   ] 
 }

@@ -10,6 +10,7 @@ namespace Dario
     {
         public void Configuration(IAppBuilder app)
         {
+
             app.UseWebApi(Models.Config.GetHttpConfiguration());
             app.UseErrorPage();
             // the next line is needed for handling the UriPathExtensionMapping...

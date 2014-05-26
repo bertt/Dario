@@ -2,8 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace Dario.Controllers
 {
@@ -17,11 +17,9 @@ namespace Dario.Controllers
 
             // todo read dynamicly from config directory
             var path = agsConfigDir + "catalog.json";
-            var result = Request.CreateResponse(HttpStatusCode.OK);
-            var stream = new FileStream(path, FileMode.Open);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            return result;
+            var content = File.ReadAllText(path);
+            var jsonObject = JsonConvert.DeserializeObject(content);
+            return Request.CreateResponse(HttpStatusCode.OK, jsonObject);
         }
 
     }

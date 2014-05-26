@@ -2,8 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web.Http;
+using Dario.Core.Convertors;
 using Dario.Core.GeoJson;
 using Dario.Models;
 using Newtonsoft.Json;
@@ -14,25 +14,43 @@ namespace Dario.Controllers
 {
     public class FeatureServerController:ApiController
     {
+
         // http://localhost:49430/rest/services/Treinen/FeatureServer
         [Route("rest/services/{serviceName}/FeatureServer")]
         public HttpResponseMessage GetFeatureServer(string serviceName)
         {
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
             var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\" + serviceName + ".json";
-            var result = Request.CreateResponse(HttpStatusCode.OK);
 
             if (File.Exists(path))
             {
-                var stream = new FileStream(path, FileMode.Open);
-                result.Content = new StreamContent(stream);
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return result;
+                var json = File.ReadAllText(path);
+                var jsonObject = JsonConvert.DeserializeObject(json);
+                return Request.CreateResponse(HttpStatusCode.OK,jsonObject);
             }
-            return new HttpResponseMessage(HttpStatusCode.NotFound){};
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        // sample: http://localhost:49430/rest/services/treinen/FeatureServer/0/query/query?returnGeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json
+        // http://localhost:49430/rest/services/Treinen/FeatureServer/0
+        [Route("rest/services/{serviceName}/FeatureServer/{layerId}")]
+        public HttpResponseMessage GetFeatureServer(string serviceName,string layerId)
+        {
+            var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
+            var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\" + serviceName + "_"+ layerId + ".json";
+
+            if (File.Exists(path))
+            {
+                var json = File.ReadAllText(path);
+                var jsonObject = JsonConvert.DeserializeObject(json);
+                return Request.CreateResponse(HttpStatusCode.OK, jsonObject);
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+
+
+        // sample 1 http://localhost:49430/rest/services/Countries/FeatureServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=28992&callback=dojo.io.script.jsonp_dojoIoScript13._jsonpCallback
+        // sample 2: http://localhost:49430/rest/services/treinen/FeatureServer/0/query/query?returnGeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json
+        [Route("rest/services/{serviceName}/FeatureServer/{layerId}/query")]
         [Route("rest/services/{serviceName}/FeatureServer/{layerId}/query/{operation}")]
         public HttpResponseMessage GetQuery(string serviceName, string layerId, string operation = "",
             bool returnGeometry=true,
@@ -60,17 +78,14 @@ namespace Dario.Controllers
             )
         {
             // open settings for service, layer
-            dynamic result;
+            Core.Esri.FeatureCollection result = null;
 
-
-            // first let's read the config file
+            // first let's read the server config file
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
-            var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + ".json";
-            if (File.Exists(path))
+            var serverconfig = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + "_server.json";
+            if (File.Exists(serverconfig))
             {
-                File.ReadAllText(path);
-                var stream = new FileStream(path, FileMode.Open);
-                var content = new StreamContent(stream).ReadAsStringAsync().Result;
+                var content = File.ReadAllText(serverconfig);
                 dynamic o = JsonConvert.DeserializeObject(content);
                 var datasourceType = (DatasourceTypes) o.type;
 
@@ -78,7 +93,7 @@ namespace Dario.Controllers
                 {
                     case DatasourceTypes.Geojson:
                         var file = (string)o.file;
-                        ReadGeojson(file);
+                        result = ReadGeojson(file);
                         break;
                     case DatasourceTypes.Postgis:
                         var dsn = (string)o.dsn;
@@ -86,21 +101,18 @@ namespace Dario.Controllers
                         ReadPostgis(dsn, sql);
                         break;
                 }
-
             }
 
-            return null;
+            return Request.CreateResponse(HttpStatusCode.OK, result); 
         }
 
-        private void ReadGeojson(string file)
+        private Core.Esri.FeatureCollection ReadGeojson(string file)
         {
             var content = File.ReadAllText(file);
-            var featurecollection = JsonConvert.DeserializeObject<FeatureCollection>(content);
+            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(content);
 
-            // todo: convert to esri format
-
-            // and return the Esri featurecollection
-
+            // convert to esri format and return 
+            return featureCollection.ToEsriJJson();
         }
 
         private void ReadPostgis(string connectionString, string sql)
