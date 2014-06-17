@@ -1,4 +1,6 @@
-﻿namespace Dario.Core.GeoJson
+﻿using System;
+
+namespace Dario.Core.GeoJson
 {
     public class Geometry
     {

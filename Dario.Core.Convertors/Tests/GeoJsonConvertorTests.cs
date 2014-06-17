@@ -15,14 +15,15 @@ namespace Dario.Core.Convertors.Tests
             double[,] numbers = {{1, 2}, {3, 4}};
             geom.coordinates = numbers;
             feature.geometry = geom;
+            feature.id = "1";
             feature.Properties.Add("LOWPARCELID", "1902226080");
 
             // act
             var result = feature.ToEsriJson();
 
             // assert
-            Assert.IsTrue(result.Attributes.Count == 1);
-            Assert.IsTrue(result.Geometry.rings!=null);
+            Assert.IsTrue(result.attributes.Count == 2);
+            Assert.IsTrue(result.geometry.rings!=null);
         }
 
         [Test]
@@ -34,6 +35,7 @@ namespace Dario.Core.Convertors.Tests
             double[,] numbers = { { 1, 2 }, { 3, 4 } };
             geom.coordinates = numbers;
             var feature = new Feature {geometry = geom};
+            feature.id = "1";
             feature.Properties.Add("LOWPARCELID", "1902226080");
             featureCollection.features.Add(feature);
 

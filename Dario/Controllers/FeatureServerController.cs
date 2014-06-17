@@ -3,18 +3,14 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Dario.Core.Convertors;
-using Dario.Core.GeoJson;
-using Dario.Models;
+using Dario.Core.Esri;
+using Dario.DataReaders;
 using Newtonsoft.Json;
-using Npgsql;
-using Dapper;
 
 namespace Dario.Controllers
 {
     public class FeatureServerController:ApiController
     {
-
         // http://localhost:49430/rest/services/Treinen/FeatureServer
         [Route("rest/services/{serviceName}/FeatureServer")]
         public HttpResponseMessage GetFeatureServer(string serviceName)
@@ -24,9 +20,8 @@ namespace Dario.Controllers
 
             if (File.Exists(path))
             {
-                var json = File.ReadAllText(path);
-                var jsonObject = JsonConvert.DeserializeObject(json);
-                return Request.CreateResponse(HttpStatusCode.OK,jsonObject);
+                var jsonObject = ConfigDataReader.ReadObject(path);
+                return Request.CreateResponse(HttpStatusCode.OK, jsonObject);
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
@@ -36,13 +31,11 @@ namespace Dario.Controllers
         public HttpResponseMessage GetFeatureServer(string serviceName,string layerId)
         {
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
-            var path = agsConfigDir + @"FeatureServer\" + serviceName + @"\" + serviceName + "_"+ layerId + ".json";
 
-            if (File.Exists(path))
+            var config = ConfigDataReader.GetFeatureLayerConfig(agsConfigDir, serviceName, layerId);
+            if (config != null)
             {
-                var json = File.ReadAllText(path);
-                var jsonObject = JsonConvert.DeserializeObject(json);
-                return Request.CreateResponse(HttpStatusCode.OK, jsonObject);
+                return Request.CreateResponse(HttpStatusCode.OK, config);
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
@@ -50,6 +43,8 @@ namespace Dario.Controllers
 
         // sample 1 http://localhost:49430/rest/services/Countries/FeatureServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=28992&callback=dojo.io.script.jsonp_dojoIoScript13._jsonpCallback
         // sample 2: http://localhost:49430/rest/services/treinen/FeatureServer/0/query/query?returnGeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json
+        // sample 3: http://localhost:49430/rest/services/Countries/FeatureServer/0/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&maxAllowableOffset=4891&geometry={"xmin":-7514065.628548959,"ymin":-57906.523661296815,"xmax":-5009377.08570097,"ymax":2446782.0191866923,"spatialReference":{"wkid":102100,"latestWkid":3857}}&geometryType=esriGeometryEnvelope&inSR=102100&outFields=&outSR=102100
+
         [Route("rest/services/{serviceName}/FeatureServer/{layerId}/query")]
         [Route("rest/services/{serviceName}/FeatureServer/{layerId}/query/{operation}")]
         public HttpResponseMessage GetQuery(string serviceName, string layerId, string operation = "",
@@ -59,10 +54,10 @@ namespace Dario.Controllers
             string where = "",
             string time = "",
             string geometry = "",
-            string geometryType = "",
+            esriGeometryType geometryType = esriGeometryType.esriGeometryPoint,
             string geometryPrecision = "",
             string inSr = "",
-            string spatialRel = "",
+            esriSpatialRelType spatialRel = esriSpatialRelType.esriSpatialRelIntersects,
             string outSr = "",
             string returnIdsOnly = "",
             string returnCountOnly = "",
@@ -79,57 +74,46 @@ namespace Dario.Controllers
         {
             // open settings for service, layer
             Core.Esri.FeatureCollection result = null;
+            Geometry filterGeometry = null;
 
             // first let's read the server config file
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
-            var serverconfig = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + "_server.json";
-            if (File.Exists(serverconfig))
+            var serverconfigFile = agsConfigDir + @"FeatureServer\" + serviceName + @"\"+ serviceName + "_" + layerId + "_server.json";
+            if (File.Exists(serverconfigFile))
             {
-                var content = File.ReadAllText(serverconfig);
-                dynamic o = JsonConvert.DeserializeObject(content);
-                var datasourceType = (DatasourceTypes) o.type;
+                var content = File.ReadAllText(serverconfigFile);
+                dynamic serverConfig = JsonConvert.DeserializeObject(content);
 
-                switch (datasourceType)
+                // get client config
+                var featureLayerConfig = ConfigDataReader.GetFeatureLayerConfig(agsConfigDir, serviceName, layerId);
+                result = FeatureCollectionDataReader.GetFeatureCollection(serverConfig, featureLayerConfig);
+
+                // Get the geographic filter
+                if (!string.IsNullOrEmpty(geometry))
                 {
-                    case DatasourceTypes.Geojson:
-                        var file = (string)o.file;
-                        result = ReadGeojson(file);
-                        break;
-                    case DatasourceTypes.Postgis:
-                        var dsn = (string)o.dsn;
-                        var sql = (string)o.sql;
-                        ReadPostgis(dsn, sql);
-                        break;
+                    filterGeometry = GetFilterGeometry(geometry, geometryType);
+                    
+                    // now do the spatial filtering of the featurecollection
+                    // improvement: do this at reading time....
                 }
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, result); 
         }
 
-        private Core.Esri.FeatureCollection ReadGeojson(string file)
-        {
-            var content = File.ReadAllText(file);
-            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(content);
 
-            // convert to esri format and return 
-            return featureCollection.ToEsriJJson();
-        }
-
-        private void ReadPostgis(string connectionString, string sql)
+        private Geometry GetFilterGeometry(string geometry,esriGeometryType geometryType)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            Geometry resultGeometry = null;
+            switch (geometryType)
             {
-                conn.Open();
-                var res = conn.Query(sql);
-                foreach (var p in res)
-                {
-                    // todo: create something here
-
-                }
+                // todo: add other filter geometry types
+                case esriGeometryType.esriGeometryEnvelope:
+                    resultGeometry = JsonConvert.DeserializeObject<Extent>(geometry);
+                    break;
             }
+            return resultGeometry;
         }
-
-
     }
 }
 

@@ -130,10 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\catalog.html" />
+    <Content Include="client\Esri.html" />
     <Content Include="client\features.html" />
     <Content Include="client\geocoding.html" />
     <Content Include="client\geometry.html" />
     <Content Include="client\index.html" />
+    <Content Include="client\leaflet.html" />
     <Content Include="client\tiles.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -173,6 +175,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TileController.cs" />
     <Compile Include="Controllers\VersionController.cs" />
+    <Compile Include="DataReaders\ConfigDataReader.cs" />
+    <Compile Include="DataReaders\FeatureCollectionDataReader.cs" />
+    <Compile Include="DataReaders\GeojsonDataReader.cs" />
+    <Compile Include="DataReaders\PostgisDataReader.cs" />
     <Compile Include="Formatters\PngMediaTypeFormatter.cs" />
     <Compile Include="Models\DatasourceTypes.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
@@ -206,6 +212,13 @@
       <Project>{15f7df9c-eabd-4e3c-8048-17f22998d2da}</Project>
       <Name>Dario.Core.GeoJson</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dario.Projections\Dario.Projections.csproj">
+      <Project>{76c27691-c7b9-4fc5-854c-f5562deb7008}</Project>
+      <Name>Dario.Projections</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataFilters\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -230,6 +243,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties Config_2FeatureServer_2countries_2countries__0_1json__JSONSchema="http://json-ld.org/schemas/jsonld-schema.json" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

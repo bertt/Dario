@@ -15,4 +15,6 @@ namespace Dario.Core.GeoJson
         public Geometry geometry { get; set; }
         public Style style { get; set; }
     }
+
+
 }

@@ -4,7 +4,7 @@
    "name": "Countries", 
    "type": "Feature Layer", 
    "displayField": "Name", 
-   "objectIdField": "ID",
+   "objectIdField": "objectid",
    "description": "",
    "copyrightText": "", 
    "defaultVisibility": true, 

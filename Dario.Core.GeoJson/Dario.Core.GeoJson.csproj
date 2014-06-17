@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Extent.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="FeatureCollection.cs" />
     <Compile Include="Geometry.cs" />

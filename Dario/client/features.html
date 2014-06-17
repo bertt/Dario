@@ -5,13 +5,20 @@
 </head>
 <body>
     <h2>Dario Demo pages - Esri Features</h2>
+    Viewer: <a href="Esri.html">Esri viewer + countries.geojson</a><br/>
+    Viewer: <a href="leaflet.html">Leaflet viewer + countries.geojson</a><br />
+
+
+    <br />
+    Requests:<br />
     <h3>.1 getFeatureServer request</h3>
     <a href="/rest/services/Treinen/FeatureServer">feature server request for treinen</a><br />
     <h3>.2 Features from GeoJson file</h3>
-    <a href="../rest/services/countries/FeatureServer/0/query/query?returnGeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json">get countries features from geojson file</a><br />
-    <h3>.3 Features (treinen) from Postgis</h3>
-    <a href="../rest/services/treinen/FeatureServer/0/query/query?returnGeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json">get countries features from geojson file</a><br />
-
+    <a href="../rest/services/countries/FeatureServer/0/query/query?returngeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json">get countries features from geojson file</a><br />
+    <h3>.3 Features from GeoJson file with geometryfilter</h3>
+    <a href="../rest/services/Countries/FeatureServer/0/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&maxAllowableOffset=19567&geometry={'xmin':-0.000004988163709640503,'ymin':1947801.0985411945,'xmax':10018754.171386972,'ymax':11966555.269933153,'spatialReference':{'wkid':102100,'latestWkid':3857}}&geometryType=esriGeometryEnvelope&inSR=102100&outFields=&outSR=102100">get countries features with geometry from geojson file</a><br />
+    <h3>.4 Features (treinen) from Postgis</h3>
+    <a href="../rest/services/treinen/FeatureServer/0/query/query?returngeometry=true&spatialRel=esriSpatialRelIntersects&where=1%3d1&outSR=102100&maxAllowableOffset=38.2185141425367&outFields=*&orderByFields=ID+ASC&f=json">get countries features from geojson file</a><br />
 
 </body>
 </html>

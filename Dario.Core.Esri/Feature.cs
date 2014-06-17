@@ -7,9 +7,9 @@ namespace Dario.Core.Esri
     {
         public Feature()
         {
-            Geometry = new ExpandoObject();
+            geometry = new ExpandoObject();
         }
-        public dynamic Geometry { get; set; }
-        public Dictionary<string, object> Attributes { get; set; }
+        public dynamic geometry { get; set; }
+        public Dictionary<string, object> attributes { get; set; }
     }
 }
