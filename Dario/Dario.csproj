@@ -123,10 +123,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.1.2\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="WebApiContrib.Formatting.Jsonp, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\WebApiContrib\WebApiContrib.Formatting.Jsonp\src\WebApiContrib.Formatting.Jsonp\bin\Debug\WebApiContrib.Formatting.Jsonp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="client\catalog.html" />
@@ -169,6 +165,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Packages\TaskHelpers.Sources.0.1\TaskHelpers.cs" />
+    <Compile Include="App_Packages\TaskHelpers.Sources.0.1\TaskHelpersExtensions.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\FeatureServerController.cs" />
     <Compile Include="Controllers\GeometryServerController.cs" />
