@@ -72,9 +72,7 @@ namespace Dario.Controllers
             bool returnM= false
             )
         {
-            // open settings for service, layer
-            Core.Esri.FeatureCollection result = null;
-            Geometry filterGeometry = null;
+            FeatureCollection result = null;
 
             // first let's read the server config file
             var agsConfigDir = ConfigurationManager.AppSettings["AgsConfigDir"];
@@ -91,10 +89,10 @@ namespace Dario.Controllers
                 // Get the geographic filter
                 if (!string.IsNullOrEmpty(geometry))
                 {
-                    filterGeometry = GetFilterGeometry(geometry, geometryType);
+                    var filterGeometry = GetFilterGeometry(geometry, geometryType);
+                    // todo convert filtergemotry to wgs84....
                     
-                    // now do the spatial filtering of the featurecollection
-                    // improvement: do this at reading time....
+                    result.features = result.FilterFeatureCollection((Extent)filterGeometry);
                 }
             }
 

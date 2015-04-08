@@ -17,5 +17,19 @@ namespace Dario.Core.Esri
         public List<Field> fields { get; set; }
         public List<Feature> features { get; set; }
 
+        public List<Feature> FilterFeatureCollection(Extent ext)
+        {
+            var filteredFeatures = new List<Feature>();
+            foreach (var f in features)
+            {
+                var envelope = f.GetEnvelope();
+                if (envelope.Intersects(ext))
+                {
+                    filteredFeatures.Add(f);
+                }
+            }
+            return filteredFeatures;
+        }
+
     }
 }

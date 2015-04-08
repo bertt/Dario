@@ -218,6 +218,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Config\FeatureServer\cow\" />
     <Folder Include="DataFilters\" />
   </ItemGroup>
   <PropertyGroup>
