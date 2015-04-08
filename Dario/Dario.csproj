@@ -180,6 +180,7 @@
     <Compile Include="Formatters\PngMediaTypeFormatter.cs" />
     <Compile Include="Models\DatasourceTypes.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
+    <Compile Include="Models\ImageFetcher.cs" />
     <Compile Include="Models\JsonResponseMessage.cs" />
     <Compile Include="Providers\MbTileProvider.cs" />
     <Compile Include="Models\Config.cs" />
@@ -234,7 +235,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49430</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49430/</IISUrl>
+          <IISUrl>http://localhost:49431/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
