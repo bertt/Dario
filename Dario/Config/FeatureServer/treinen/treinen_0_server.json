@@ -1,0 +1,13 @@
+﻿{
+   "type": "PostGIS",
+   "dsn" : "Server=geodb;Database=gls;User Id=gls;Password=glspwd;Port=5433;Pooling=false",
+   "sql": "select trackeeid as id,dtgps as dategps, dtreceived as datereceived, st_x(geom_snapped) as longitude, st_y(geom_snapped) as latitude,event,
+            track,speed,dop,geocodedname as bps, o.name as organisation,t.name as trackee
+            from positions p
+            join trackees t
+            on p.trackeeid = t.id
+            join orgs o
+            on t.orgid = o.id
+            where o.name = 'Nederlandse Spoorwegen'",
+   "srid": "4326"
+}
