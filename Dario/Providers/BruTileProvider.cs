@@ -7,7 +7,7 @@ using BruTile.Web;
 
 namespace Dario.Providers
 {
-    public class BrutTileProvider
+    public class BruTileProvider
     {
         public static Image GetTile(string lyr, string level, int col, int row)
         {

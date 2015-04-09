@@ -186,7 +186,7 @@
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ImageMerger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\BrutTileProvider.cs" />
+    <Compile Include="Providers\BruTileProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\CatalogResourceTests.cs" />
     <Compile Include="Tests\FeatureServerResourceTests.cs" />

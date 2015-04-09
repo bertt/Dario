@@ -85,7 +85,7 @@ namespace Dario.Controllers
         {
             if (EnumIsDefined< KnownTileServers>(lyr, true))
             {
-                return BrutTileProvider.GetTile(lyr, level, col, row);
+                return BruTileProvider.GetTile(lyr, level, col, row);
             }
             return null;
         }
