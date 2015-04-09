@@ -9,9 +9,9 @@ namespace Dario.Providers
 {
     public class BruTileProvider
     {
-        public static Image GetTile(string lyr, string level, int col, int row)
+        public static Image GetTile(string layer, string level, int col, int row)
         {
-            var tileServer = (KnownTileServers)Enum.Parse(typeof (KnownTileServers), lyr,true);
+            var tileServer = (KnownTileServers)Enum.Parse(typeof (KnownTileServers), layer,true);
             var tilesource = TileSource.Create(tileServer);
             return GetTile(tilesource, level, col, row);
         }
