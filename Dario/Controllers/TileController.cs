@@ -18,9 +18,9 @@ namespace Dario.Controllers
 
         // testurl http://localhost:49430/stamentoner,countries,cities/6/36/39.jpg
         [Route("{layers}/{level:int:min(0)}/{col:int:min(0)}/{row:int:min(0)}.{ext}")]
-        public HttpResponseMessage GetTile(string layers, string level, int col, int row,string ext)
+        public HttpResponseMessage GetTile(string layers, string level, int col, int row, string ext)
         {
-            var images = GetTileImages(layers.Split(','),level,col,row);
+            var images = GetTileImages(layers.Split(','), level, col, row);
 
             if (images.Count > 0)
             {
@@ -29,7 +29,7 @@ namespace Dario.Controllers
                 if (resultimage != null)
                 {
                     var bytes = ImageConvertor.Convert(resultimage, ext);
-                    var contentType = getMediaType(ext);
+                    var contentType = GetMediaType(ext);
                     return JsonResponseMessage.GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
                 }
             }
@@ -42,11 +42,11 @@ namespace Dario.Controllers
             foreach (var layer in layers)
             {
                 var image = FindInAvailableTileSources(layer, level, col, row);
-                
+
                 if (image != null)
                 {
                     images.Add(image);
-                } 
+                }
             }
             return images;
         }
@@ -64,17 +64,17 @@ namespace Dario.Controllers
             return urlTemplate == null ? null : _imageFetcher.Fetch(col, row, level, urlTemplate).Result;
         }
 
-        private Image FindInMbTilesTileSources(string layer, string level, int col, int row)
+        private static Image FindInMbTilesTileSources(string layer, string level, int col, int row)
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
 
-            var mbtiledb = mbtiledir + getDataSource(layer);
+            var mbtiledb = mbtiledir + GetDataSource(layer);
             if (!File.Exists(mbtiledb)) return null;
 
             // todo: hoe werkt dit?
             var ymax = 1 << Int32.Parse(level);
             var y = ymax - row - 1;
-            
+
             var connectionString = string.Format("Data Source={0}", mbtiledb);
             var mbTileProvider = new MbTileProvider(connectionString);
             return mbTileProvider.GetTile(level, col, y);
@@ -82,7 +82,7 @@ namespace Dario.Controllers
 
         private static Image FindInKnownTileSources(string layer, string level, int col, int row)
         {
-            if (EnumIsDefined< KnownTileServers>(layer, true))
+            if (EnumIsDefined<KnownTileServers>(layer, true))
             {
                 return BruTileProvider.GetTile(layer, level, col, row);
             }
@@ -99,7 +99,7 @@ namespace Dario.Controllers
             return Enum.IsDefined(typeof(T), value);
         }
 
-        private string getMediaType(string ext)
+        private static string GetMediaType(string ext)
         {
             var mediatype = "image/jpeg";
             switch (ext)
@@ -115,7 +115,7 @@ namespace Dario.Controllers
 
         }
 
-        private string getDataSource(string layer)
+        private static string GetDataSource(string layer)
         {
             return layer + ".mbtiles";
         }
