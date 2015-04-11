@@ -1,23 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
 
 namespace Dario.Models
 {
     public class ImageMerger
     {
-        public static Image Merge(List<Image> images)
+        public static byte[] Merge(List<byte[]> images, string ext)
         {
-            if (images == null) throw new ArgumentNullException();
-            var compositeImage = new Bitmap(images[0].Width, images[0].Height, PixelFormat.Format32bppArgb);
-            var compositeGraphics = Graphics.FromImage(compositeImage);
-            foreach (var image in images)
-            {
-                compositeGraphics.DrawImage(image, new Point(0, 0));
-            }
-            return compositeImage;
-        }
+            Graphics compositeGraphics = null;
+            Image compositeImage = null;
 
+            if (images == null) throw new ArgumentNullException();
+
+            try
+            {
+                foreach (var image in images)
+                {
+                    if (compositeImage == null) // first time
+                    {
+                        compositeImage = Image.FromStream(new MemoryStream(image));
+                        compositeGraphics = Graphics.FromImage(compositeImage);
+                    }
+                    else
+                    {
+                        using (var singleImage = Image.FromStream(new MemoryStream(image)))
+                        {
+                            compositeGraphics.DrawImage(singleImage, new Point(0, 0));
+                        }
+                    }
+                }
+                return ImageConvertor.Convert(compositeImage, ext);
+            }
+            finally
+            {
+                if (compositeGraphics != null) compositeGraphics.Dispose();
+                if (compositeImage != null) compositeImage.Dispose();
+            }
+        }
     }
 }

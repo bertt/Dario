@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -24,11 +23,10 @@ namespace Dario.Controllers
 
             if (images.Count > 0)
             {
-                var resultimage = ImageMerger.Merge(images);
+                var bytes = ImageMerger.Merge(images, ext);
 
-                if (resultimage != null)
+                if (bytes != null)
                 {
-                    var bytes = ImageConvertor.Convert(resultimage, ext);
                     var contentType = GetMediaType(ext);
                     return JsonResponseMessage.GetHttpResponseMessage(bytes, contentType, HttpStatusCode.OK);
                 }
@@ -36,9 +34,9 @@ namespace Dario.Controllers
             return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
         }
 
-        private List<Image> GetTileImages(IEnumerable<string> layers, string level, int col, int row)
+        private List<byte[]> GetTileImages(IEnumerable<string> layers, string level, int col, int row)
         {
-            var images = new List<Image>();
+            var images = new List<byte[]>();
             foreach (var layer in layers)
             {
                 var image = FindInAvailableTileSources(layer, level, col, row);
@@ -51,20 +49,20 @@ namespace Dario.Controllers
             return images;
         }
 
-        private Image FindInAvailableTileSources(string layer, string level, int col, int row)
+        private byte[] FindInAvailableTileSources(string layer, string level, int col, int row)
         {
             return FindInKnownTileSources(layer, level, col, row)
                    ?? FindConfiguredTileSources(layer, level, col, row)
                    ?? FindInMbTilesTileSources(layer, level, col, row);
         }
 
-        private Image FindConfiguredTileSources(string layer, string level, int col, int row)
+        private byte[] FindConfiguredTileSources(string layer, string level, int col, int row)
         {
             var urlTemplate = ConfigurationManager.AppSettings[layer];
             return urlTemplate == null ? null : _imageFetcher.Fetch(col, row, level, urlTemplate).Result;
         }
 
-        private static Image FindInMbTilesTileSources(string layer, string level, int col, int row)
+        private static byte[] FindInMbTilesTileSources(string layer, string level, int col, int row)
         {
             var mbtiledir = ConfigurationManager.AppSettings["MbTileDir"];
 
@@ -80,7 +78,7 @@ namespace Dario.Controllers
             return mbTileProvider.GetTile(level, col, y);
         }
 
-        private static Image FindInKnownTileSources(string layer, string level, int col, int row)
+        private static byte[] FindInKnownTileSources(string layer, string level, int col, int row)
         {
             if (EnumIsDefined<KnownTileServers>(layer, true))
             {

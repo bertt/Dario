@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
 using System.Net;
 using BruTile;
 using BruTile.Web;
@@ -9,15 +7,14 @@ namespace Dario.Providers
 {
     public class BruTileProvider
     {
-        public static Image GetTile(string layer, string level, int col, int row)
+        public static byte[] GetTile(string layer, string level, int col, int row)
         {
             var tileServer = (KnownTileServers)Enum.Parse(typeof (KnownTileServers), layer,true);
             var tilesource = TileSource.Create(tileServer);
             return GetTile(tilesource, level, col, row);
         }
 
-
-        private static Image GetTile(ITileSource tileSource, string level, int col, int row)
+        private static byte[] GetTile(ITileSource tileSource, string level, int col, int row)
         {
             try
             {
@@ -25,10 +22,7 @@ namespace Dario.Providers
                 var tileIndex = new TileIndex(col, row, level);
                 tileInfo.Index = tileIndex;
                
-                var bytes = tileSource.Provider.GetTile(tileInfo);
-                var ms = new MemoryStream(bytes);
-                var image = Image.FromStream(ms);
-                return image;
+                return tileSource.Provider.GetTile(tileInfo);
             }
             catch (WebException)
             {
@@ -36,7 +30,5 @@ namespace Dario.Providers
                 return null;
             }
         }
-
-
     }
 }
