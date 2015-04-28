@@ -1,6 +1,8 @@
 Dario
 ===========================
 
+[![Join the chat at https://gitter.im/bertt/Dario](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bertt/Dario?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Fast and furious tile- and featureserver
 
 Features:
